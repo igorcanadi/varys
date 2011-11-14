@@ -7,7 +7,7 @@
 
 
 
-prefix = /usr/local
+prefix = /home/canadi/varys/lib/mysql++-3.1.0/
 exec_prefix = ${prefix}
 datarootdir = @datarootdir@
 INSTALL = /usr/bin/install -c
@@ -25,7 +25,7 @@ STRIP = strip
 INSTALL_PROGRAM = ${INSTALL}
 INSTALL_DATA = ${INSTALL} -m 644
 INSTALL_DIR = $(INSTALL) -d
-BK_DEPS = /u/c/a/canadi/Varys/lib/mysql++-3.1.0/bk-deps
+BK_DEPS = /home/canadi/varys/lib/mysql++-3.1.0/bk-deps
 srcdir = .
 libdir = ${exec_prefix}/lib
 DLLPREFIX = lib
