@@ -1,33 +1,30 @@
 #ifndef _SNMP_SENSOR_H
 #define _SNMP_SENSOR_H
 
+#include <iostream>
+#include <cstring>
 #include <string>
+#include <net-snmp/net-snmp-config.h>
+#include <net-snmp/net-snmp-includes.h>
 
 #include "record.h"
 #include "sensor.h"
 
-class SNMPSensor : public Sensor{
+#define INVALID_VALUE -1e10
+
+class SNMPSensor : public Sensor {
 public:
-    /**
-     * @returns file descriptor to wait for IO
-     */
-    int sendQueryAsync();
-    /**
-     * If IO is ready, it's non-blocking.
-     * It can also be called with IO not ready,
-     * but then it's blocking
-     * @returns 0 on success, -1 on error
-     */
-    int getRecordAsync(Record &record);
+    virtual int getRecord(Record &record);
 
     // TODO read host from config file
-    SNMPSensor(int _sensorID, std::string _host) :
+    SNMPSensor(int _sensorID, std::string _host, std::string _community) :
         Sensor(_sensorID),
-        host_(_host) {}
+        host_(_host),
+        community_(_community) {}
 
 private:
-    std::string host_;
-    int socket;
+    std::string host_, community_;
+    bool libraryInitialized_;
 };
 
 #endif

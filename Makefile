@@ -1,7 +1,7 @@
 SHELL = /bin/sh
 CC = g++
 INCLUDES = -I./lib/mysql++-3.1.0/include/mysql++
-LIBS = -L ./lib/mysql++-3.1.0 -lmysqlpp
+LIBS = -L ./lib/mysql++-3.1.0 -lmysqlpp `net-snmp-config --libs`
 CCFLAGS = -g $(INCLUDES) -DMYSQLPP_MYSQL_HEADERS_BURIED
 LDFLAGS = -g
 OBJS = \

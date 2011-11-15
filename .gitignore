@@ -13,3 +13,6 @@
 
 # Compiled project
 varys
+
+# Vim swap files
+*.swp
