@@ -11,3 +11,5 @@
 *.la
 *.a
 
+# Compiled project
+varys
