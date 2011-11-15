@@ -6,7 +6,9 @@ CCFLAGS = -g $(INCLUDES) -DMYSQLPP_MYSQL_HEADERS_BURIED
 LDFLAGS = -g
 OBJS = \
     mysql_output.o \
-    main.o
+    main.o \
+    sensor.o \
+    snmp_sensor.o
 
 srcdir = src
 
