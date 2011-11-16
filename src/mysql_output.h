@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <mysql++.h>
+#include <mysql++/mysql++.h>
 #include <exception>
 #include <boost/property_tree/ptree.hpp>
 
