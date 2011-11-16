@@ -6,6 +6,7 @@
 #include <string>
 #include <mysql++.h>
 #include <exception>
+#include <boost/property_tree/ptree.hpp>
 
 #include "record.h"
 #include "output.h"
@@ -16,7 +17,7 @@ public:
      * @returns 0 on success, -1 on error
      */
     int outputRecords(const std::vector <Record>& records);
-    MySQLOutput();
+    MySQLOutput(const boost::property_tree::ptree &config);
 
 private:
     /*

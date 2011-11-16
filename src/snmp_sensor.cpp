@@ -27,7 +27,7 @@ int SNMPSensor::getRecord(Record &record) {
     // define object id we'll query
     oid objectID[MAX_OID_LEN];
     size_t objectIDLen = MAX_OID_LEN;
-    snmp_parse_oid(".1.3.6.1.2.1.1.1.0", objectID, &objectIDLen);
+    snmp_parse_oid(this->oid_.c_str(), objectID, &objectIDLen);
 
     // define request
     netsnmp_pdu *req;
@@ -37,8 +37,6 @@ int SNMPSensor::getRecord(Record &record) {
     // send query
     netsnmp_pdu *response;
     int status = snmp_synch_response(session, req, &response);
-
-    printf("response\n");
 
     if (status == STAT_SUCCESS && response->errstat == SNMP_ERR_NOERROR) {
         for (netsnmp_variable_list *vars = response->variables; vars; vars = vars->next_variable) {

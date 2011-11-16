@@ -1,12 +1,15 @@
 #include "mysql_output.h"
 
-MySQLOutput::MySQLOutput() {
-    // TODO get this from config file
-    this->host_ = "localhost";
-    this->user_ = "igor";
-    this->password_ = "UqYfh7dM";
-    this->db_ = "energy";
-    this->table_ = "sensor_data";
+MySQLOutput::MySQLOutput(const boost::property_tree::ptree &config) {
+    try {
+        this->host_ = config.get<std::string>("mysql.host");
+        this->user_ = config.get<std::string>("mysql.user");
+        this->password_ = config.get<std::string>("mysql.password");
+        this->db_ = config.get<std::string>("mysql.db");
+        this->table_ = config.get<std::string>("mysql.table");
+    } catch (boost::property_tree::ptree_bad_path e) {
+        std::cerr << "error reading config for mysql\n";
+    }
 }
 
 int MySQLOutput::outputRecords(const ::std::vector <Record>& records) {

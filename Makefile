@@ -12,12 +12,12 @@ OBJS = \
 
 srcdir = src
 
-all: varys
+all: varys 
 
 varys: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
-%.o : $(srcdir)/%.cpp
+%.o: $(srcdir)/%.cpp
 	$(CC) $(CCFLAGS) $(LDFLAGS) -c $< -o $@
 
 clean:

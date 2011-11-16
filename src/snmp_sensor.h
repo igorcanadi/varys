@@ -16,14 +16,15 @@ class SNMPSensor : public Sensor {
 public:
     virtual int getRecord(Record &record);
 
-    // TODO read host from config file
-    SNMPSensor(int _sensorID, std::string _host, std::string _community) :
+    SNMPSensor(int _sensorID, std::string _host,
+            std::string _community, std::string _oid) :
         Sensor(_sensorID),
         host_(_host),
-        community_(_community) {}
+        community_(_community),
+        oid_(_oid) {}
 
 private:
-    std::string host_, community_;
+    std::string host_, community_, oid_;
     bool libraryInitialized_;
 };
 
