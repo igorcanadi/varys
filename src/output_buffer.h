@@ -11,16 +11,15 @@ template <typename T>
 class OutputBuffer {
 public:
     void push(T t) {
-        boost::lock_guard<boost::mutex> lock(this->mutex);
+        boost::lock_guard<boost::mutex> lock(this->mutex_);
         Q_.push(t);
     }
     void pushMany(std::vector<T> &t) {
-        boost::lock_guard<boost::mutex> lock(this->mutex);
+        boost::lock_guard<boost::mutex> lock(this->mutex_);
         for (int i = 0; i < t.size(); ++i) {
             Q_.push(t[i]);
         }
     }
-
     T pop() {
         boost::unique_lock<boost::mutex> lock(this->mutex_);
 
@@ -28,8 +27,8 @@ public:
             this->cond_.wait(lock);
         }
 
-        T t = Q.front(); Q.pop();
-        return T;
+        T t = Q_.front(); Q_.pop();
+        return t;
     }
     void popMany(std::vector <T> &t, int maxSize) {
         boost::unique_lock<boost::mutex> lock(this->mutex_);
@@ -40,7 +39,7 @@ public:
 
         t.clear();
         while (!Q_.empty() && t.size() < maxSize) {
-            t.push_back(Q.front()); Q.pop();
+            t.push_back(Q_.front()); Q_.pop();
         }
     }
 
