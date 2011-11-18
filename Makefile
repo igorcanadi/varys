@@ -1,7 +1,7 @@
 SHELL = /bin/sh
 CC = g++
 INCLUDES = 
-LIBS = -lmysqlpp `net-snmp-config --libs` -lboost_thread -lpthread
+LIBS = -lmysqlpp `net-snmp-config --libs` -lboost_thread -lpthread -lglog
 CCFLAGS = -g $(INCLUDES) -DMYSQLPP_MYSQL_HEADERS_BURIED
 LDFLAGS = -g
 OBJS = \
