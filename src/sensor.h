@@ -12,6 +12,7 @@ public:
      */
     virtual int getRecord(ptrRecord record) = 0;
     virtual int getQueryFrequency() = 0;
+    int getSensorID() const;
 
     Sensor(int _sensorID) :
         sensorID_(_sensorID) {}

@@ -34,6 +34,8 @@ public:
 private:
     // how many threads to create
     int maxNumberOfThreads_;
+    // number of retries
+    int numberOfRetries_;
     // vector of all sensors
     std::vector <boost::shared_ptr<Sensor> > sensors_;
     // we will use this to make an event loop

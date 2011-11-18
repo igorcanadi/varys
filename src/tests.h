@@ -31,7 +31,7 @@ void test_snmp_sensor(boost::property_tree::ptree &config) {
 
     printf("number of sensors: %d\n", sensors.size());
 
-    ptrRecord record;
+    ptrRecord record(new Record());
     for (int i = 0; i < sensors.size(); ++i) {
         printf("ret: %d\n", sensors[i]->getRecord(record));
         printf("%d %d %lf\n", record->getSensorID(), record->getTimestamp(), record->getValue());

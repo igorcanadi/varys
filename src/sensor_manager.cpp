@@ -6,6 +6,7 @@ SensorManager::SensorManager(boost::property_tree::ptree &config,
     try {
         SensorFactory::createSensors(this->sensors_, config.get_child("sensors"));
         this->maxNumberOfThreads_ = config.get <int> ("max_num_of_sensor_threads");
+        this->numberOfRetries_ = config.get <int> ("sensor_query_retries");
     } catch (boost::property_tree::ptree_bad_path e) {
         std::cerr << "error reading config for sensors\n";
         exit(1);
@@ -94,9 +95,29 @@ void SensorManager::queryThread() {
     while (!this->exitInitiated_) {
         printf("%d: dobio poso %d\n", pthread_self(), nextJob);
         ptrRecord record(new Record());
-        this->sensors_[nextJob]->getRecord(record);
-        // TODO check if record is valid
-        this->outputBuffer_->push(record);
+        bool recordGood = false;
+
+        for (int retry = 0; retry < this->numberOfRetries_; ++retry) {
+            std::cerr << "querying "
+                << this->sensors_[nextJob]->getSensorID()
+                << " retry " << retry
+                << std::endl;
+
+            if (this->sensors_[nextJob]->getRecord(record) == 0) {
+                recordGood = true;
+                break;
+            }
+
+            // wait before retry
+            usleep(200000);
+        }
+        if (recordGood) {
+            this->outputBuffer_->push(record);
+        } else {
+            std::cerr << "something wrong with sensor "
+                << this->sensors_[nextJob]->getSensorID()
+                << std::endl;
+        }
         nextJob = this->jobQueue_.pop();
     }
 }
