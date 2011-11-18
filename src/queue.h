@@ -32,15 +32,18 @@ public:
         T t = Q_.front(); Q_.pop_front();
         return t;
     }
-    void popMany(std::vector <T> &t, int maxSize) {
+    // if maxSize == 1, pop all
+    void popMany(std::vector <T> &t, int maxSize, bool block = true) {
         boost::unique_lock<boost::mutex> lock(this->mutex_);
 
-        while (Q_.empty()) {
-            this->cond_.wait(lock);
+        if (block) {
+            while (Q_.empty()) {
+                this->cond_.wait(lock);
+            }
         }
 
         t.clear();
-        while (!Q_.empty() && t.size() < maxSize) {
+        while (!Q_.empty() && (maxSize == -1 || t.size() < maxSize)) {
             t.push_back(Q_.front()); Q_.pop_front();
         }
     }

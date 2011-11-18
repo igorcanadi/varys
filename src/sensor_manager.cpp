@@ -75,6 +75,7 @@ void SensorManager::scheduleThread() {
         int needToSleep = this->timeouts_.begin()->first - now;
         // I do this just to reduce exit latency. If this thread sleeps, we can't
         // exit
+        // TODO make this configurable?
         if (needToSleep > 5) needToSleep = 5;
         sleep(needToSleep);
     }
@@ -91,7 +92,7 @@ void SensorManager::queryThread() {
     int nextJob = this->jobQueue_.pop();
 
     while (!this->exitInitiated_) {
-        printf("dobio poso %d\n", nextJob);
+        printf("%d: dobio poso %d\n", pthread_self(), nextJob);
         ptrRecord record(new Record());
         this->sensors_[nextJob]->getRecord(record);
         // TODO check if record is valid

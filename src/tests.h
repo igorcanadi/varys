@@ -9,6 +9,7 @@
 #include "sensor.h"
 #include "sensor_factory.h"
 #include "sensor_manager.h"
+#include "output_manager.h"
 
 void test_mysql(boost::property_tree::ptree &config) {
     MySQLOutput *db = new MySQLOutput(config);
@@ -66,4 +67,27 @@ void test_sensor_manager(boost::property_tree::ptree &config) {
         ptrRecord record = outputBuffer->pop();
         printf("%d %d %lf\n", record->getSensorID(), record->getTimestamp(), record->getValue());
     }
+}
+
+void test_output_manager(boost::property_tree::ptree &config) {
+    boost::shared_ptr<Queue<ptrRecord> > outputBuffer(new Queue<ptrRecord>);
+    boost::shared_ptr<Output> output =
+        boost::shared_ptr<Output> (new MySQLOutput(config));
+    OutputManager *om = new OutputManager(config, output, outputBuffer);
+
+    om->run();
+
+    sleep(1);
+    outputBuffer->push(ptrRecord(new Record(-1, time(NULL), 5.0)));
+    outputBuffer->push(ptrRecord(new Record(-1, time(NULL), 6.0)));
+    sleep(7);
+    // they have to be flushed now
+    printf("outputBuffer empty: %d\n", outputBuffer->empty());
+    outputBuffer->push(ptrRecord(new Record(-1, time(NULL), 5.0)));
+    outputBuffer->push(ptrRecord(new Record(-1, time(NULL), 6.0)));
+    sleep(11);
+
+    om->cleanExit();
+
+    delete om;
 }

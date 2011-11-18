@@ -18,9 +18,10 @@ int main(int argc, char *argv[]) {
         printf("error\n");
     }
 
-    test_mysql(config);
+    test_output_manager(config);
     return 0;
     test_sensor_manager(config);
+    test_mysql(config);
     test_snmp_sensor(config);
     test_queue();
 

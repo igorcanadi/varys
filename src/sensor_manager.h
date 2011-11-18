@@ -7,6 +7,7 @@
 #include <set>
 #include <utility>
 #include <pthread.h>
+#include <boost/property_tree/ptree.hpp>
 
 #include "queue.h"
 #include "record.h"
@@ -19,7 +20,7 @@ public:
     void run();
     // kill the threads and wait for them to stop
     void cleanExit();
-    // query threads from time to time
+    // query sensors from time to time
     void queryThread();
     // schedule the queries thread (only 1, always index 0)
     void scheduleThread();

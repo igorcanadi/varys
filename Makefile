@@ -9,7 +9,8 @@ OBJS = \
     main.o \
     sensor.o \
     snmp_sensor.o \
-    sensor_manager.o
+    sensor_manager.o \
+    output_manager.o
 
 srcdir = src
 
