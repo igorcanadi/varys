@@ -91,3 +91,19 @@ void test_output_manager(boost::property_tree::ptree &config) {
 
     delete om;
 }
+
+void test_all_together(boost::property_tree::ptree &config) {
+    boost::shared_ptr<Queue<ptrRecord> > outputBuffer(new Queue<ptrRecord>);
+    boost::shared_ptr<Output> output =
+        boost::shared_ptr<Output> (new MySQLOutput(config));
+    OutputManager *om = new OutputManager(config, output, outputBuffer);
+    SensorManager *sm = new SensorManager(config, outputBuffer);
+
+    sm->run();
+    om->run();
+    // run for 1hour
+    sleep(60*60);
+
+    delete om;
+    delete sm;
+}

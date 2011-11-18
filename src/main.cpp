@@ -18,8 +18,9 @@ int main(int argc, char *argv[]) {
         printf("error\n");
     }
 
-    test_sensor_manager(config);
+    test_all_together(config);
     return 0;
+    test_sensor_manager(config);
     test_snmp_sensor(config);
     test_mysql(config);
     test_output_manager(config);
