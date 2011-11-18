@@ -12,7 +12,7 @@ MySQLOutput::MySQLOutput(const boost::property_tree::ptree &config) {
     }
 }
 
-int MySQLOutput::outputRecords(const ::std::vector <Record>& records) {
+int MySQLOutput::outputRecords(const std::vector <ptrRecord>& records) {
     // mysql library throws exceptions
     try {
         if (!this->connection_.connected())
@@ -27,9 +27,9 @@ int MySQLOutput::outputRecords(const ::std::vector <Record>& records) {
         // TODO insert by chunks
         for (int i = 0; i < records.size(); ++i) {
             if (addComa) query << ",";
-            query << "(" << records[i].getSensorID() << ","
-                << records[i].getTimestamp() << ","
-                << records[i].getValue() << ")";
+            query << "(" << records[i]->getSensorID() << ","
+                << records[i]->getTimestamp() << ","
+                << records[i]->getValue() << ")";
             addComa = true;
         }
 

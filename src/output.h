@@ -9,7 +9,7 @@ public:
     /**
      * @returns 0 on success, -1 on error
      */
-    virtual int outputRecords(const std::vector <Record>& records) = 0;
+    virtual int outputRecords(const std::vector <ptrRecord>& records) = 0;
 };
 
 #endif

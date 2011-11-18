@@ -16,7 +16,7 @@ public:
     /**
      * @returns 0 on success, -1 on error
      */
-    int outputRecords(const std::vector <Record>& records);
+    int outputRecords(const std::vector <ptrRecord>& records);
     MySQLOutput(const boost::property_tree::ptree &config);
 
 private:

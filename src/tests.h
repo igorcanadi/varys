@@ -13,7 +13,7 @@
 void test_mysql(boost::property_tree::ptree &config) {
     MySQLOutput *db = new MySQLOutput(config);
 
-    int ret = db->outputRecords(std::vector<Record> (1, Record(10, time(NULL), 1.5)));
+    int ret = db->outputRecords(std::vector<ptrRecord> (1, ptrRecord(new Record(10, time(NULL), 1.5))));
     printf("ret: %d\n", ret);
 
     delete db;
