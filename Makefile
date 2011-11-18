@@ -1,14 +1,15 @@
 SHELL = /bin/sh
 CC = g++
 INCLUDES = 
-LIBS = -lmysqlpp `net-snmp-config --libs` -lboost_thread
+LIBS = -lmysqlpp `net-snmp-config --libs` -lboost_thread -lpthread
 CCFLAGS = -g $(INCLUDES) -DMYSQLPP_MYSQL_HEADERS_BURIED
 LDFLAGS = -g
 OBJS = \
     mysql_output.o \
     main.o \
     sensor.o \
-    snmp_sensor.o
+    snmp_sensor.o \
+    sensor_manager.o
 
 srcdir = src
 

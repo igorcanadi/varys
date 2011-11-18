@@ -8,6 +8,7 @@
 #include "mysql_output.h"
 #include "sensor.h"
 #include "sensor_factory.h"
+#include "sensor_manager.h"
 
 void test_mysql(boost::property_tree::ptree &config) {
     MySQLOutput *db = new MySQLOutput(config);
@@ -29,10 +30,10 @@ void test_snmp_sensor(boost::property_tree::ptree &config) {
 
     printf("number of sensors: %d\n", sensors.size());
 
-    Record record;
+    ptrRecord record;
     for (int i = 0; i < sensors.size(); ++i) {
         printf("ret: %d\n", sensors[i]->getRecord(record));
-        printf("%d %d %lf\n", record.getSensorID(), record.getTimestamp(), record.getValue());
+        printf("%d %d %lf\n", record->getSensorID(), record->getTimestamp(), record->getValue());
     }
 }
 
@@ -52,4 +53,17 @@ void test_queue() {
         printf("%d ", t[i]);
     }
     printf("\n");
+}
+
+void test_sensor_manager(boost::property_tree::ptree &config) {
+    boost::shared_ptr<Queue<ptrRecord> > outputBuffer(new Queue<ptrRecord>);
+    SensorManager sm(config, outputBuffer);
+    sm.run();
+    sleep(10);
+    sm.cleanExit();
+
+    while (!outputBuffer->empty()) {
+        ptrRecord record = outputBuffer->pop();
+        printf("%d %d %lf\n", record->getSensorID(), record->getTimestamp(), record->getValue());
+    }
 }

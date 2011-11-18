@@ -1,6 +1,6 @@
 #include "snmp_sensor.h"
 
-int SNMPSensor::getRecord(Record &record) {
+int SNMPSensor::getRecord(ptrRecord record) {
     int retval = -1;
 
     if (!this->libraryInitialized_) {

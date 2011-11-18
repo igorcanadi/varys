@@ -15,7 +15,11 @@
 
 class SNMPSensor : public Sensor {
 public:
-    virtual int getRecord(Record &record);
+    virtual int getRecord(ptrRecord record);
+    virtual int getQueryFrequency() {
+        // TODO read this from config
+        return 5;
+    }
 
     SNMPSensor(int _sensorID, std::string _host,
             std::string _community, std::string _oid) :

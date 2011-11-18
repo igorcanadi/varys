@@ -2,23 +2,23 @@
 #define _QUEUE_H
 
 #include <vector>
-#include <queue>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/condition_variable.hpp>
 #include <boost/shared_ptr.hpp>
+#include <list>
 
 template <typename T>
 class Queue {
 public:
     void push(T t) {
         boost::lock_guard<boost::mutex> lock(this->mutex_);
-        Q_.push(t);
+        Q_.push_back(t);
         this->cond_.notify_all();
     }
     void pushMany(std::vector<T> &t) {
         boost::lock_guard<boost::mutex> lock(this->mutex_);
         for (int i = 0; i < t.size(); ++i) {
-            Q_.push(t[i]);
+            Q_.push_back(t[i]);
         }
         this->cond_.notify_all();
     }
@@ -29,7 +29,7 @@ public:
             this->cond_.wait(lock);
         }
 
-        T t = Q_.front(); Q_.pop();
+        T t = Q_.front(); Q_.pop_front();
         return t;
     }
     void popMany(std::vector <T> &t, int maxSize) {
@@ -41,13 +41,18 @@ public:
 
         t.clear();
         while (!Q_.empty() && t.size() < maxSize) {
-            t.push_back(Q_.front()); Q_.pop();
+            t.push_back(Q_.front()); Q_.pop_front();
         }
     }
 
+    bool empty() {
+        boost::lock_guard<boost::mutex> lock(this->mutex_);
+        return Q_.empty();
+    }
 
 private:
-    std::queue <T> Q_;
+    // TODO change this to queue
+    std::list <T> Q_;
     boost::mutex mutex_;
     boost::condition_variable cond_;
 };

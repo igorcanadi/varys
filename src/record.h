@@ -1,6 +1,8 @@
 #ifndef _RECORD_H
 #define _RECORD_H
 
+#include <boost/shared_ptr.hpp>
+
 class Record {
 public:
 	int getSensorID() const { return sensorID_; }
@@ -18,5 +20,7 @@ private:
     int sensorID_, timestamp_;
     double value_;
 };
+
+typedef boost::shared_ptr<Record> ptrRecord;
 
 #endif

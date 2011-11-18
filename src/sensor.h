@@ -10,7 +10,8 @@ public:
     /**
      * @returns 0 on success, -1 on error
      */
-    virtual int getRecord(Record &record) = 0;
+    virtual int getRecord(ptrRecord record) = 0;
+    virtual int getQueryFrequency() = 0;
 
     Sensor(int _sensorID) :
         sensorID_(_sensorID) {}
@@ -18,7 +19,7 @@ protected:
     /**
      * @returns 0 on success, -1 on error
      */
-    void createRecord(Record &record, double value);
+    void createRecord(ptrRecord record, double value);
 
 private:
     int sensorID_;
