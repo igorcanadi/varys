@@ -39,6 +39,9 @@ int SNMPSensor::getRecord(Record &record) {
     int status = snmp_synch_response(session, req, &response);
 
     if (status == STAT_SUCCESS && response->errstat == SNMP_ERR_NOERROR) {
+        // TODO Create record here from the variable
+        this->createRecord(record, rand());
+
         for (netsnmp_variable_list *vars = response->variables; vars; vars = vars->next_variable) {
             print_variable(vars->name, vars->name_length, vars);
         }
