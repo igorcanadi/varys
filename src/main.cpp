@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
     test_mysql(config);
     test_snmp_sensor(config);
-    test_output_buffer();
+    test_queue();
 
     return 0;
 }

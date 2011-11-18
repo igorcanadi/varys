@@ -3,7 +3,7 @@
 #include <boost/foreach.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/info_parser.hpp>
-#include "output_buffer.h"
+#include "queue.h"
 #include "record.h"
 #include "mysql_output.h"
 #include "sensor.h"
@@ -36,8 +36,8 @@ void test_snmp_sensor(boost::property_tree::ptree &config) {
     }
 }
 
-void test_output_buffer() {
-    OutputBuffer <int> ob;
+void test_queue() {
+    Queue <int> ob;
 
     ob.push(3);
     ob.push(2);

@@ -1,5 +1,5 @@
-#ifndef _OUTPUT_BUFFER_H
-#define _OUTPUT_BUFFER_H
+#ifndef _QUEUE_H
+#define _QUEUE_H
 
 #include <vector>
 #include <queue>
@@ -8,17 +8,19 @@
 #include <boost/shared_ptr.hpp>
 
 template <typename T>
-class OutputBuffer {
+class Queue {
 public:
     void push(T t) {
         boost::lock_guard<boost::mutex> lock(this->mutex_);
         Q_.push(t);
+        this->cond_.notify_all();
     }
     void pushMany(std::vector<T> &t) {
         boost::lock_guard<boost::mutex> lock(this->mutex_);
         for (int i = 0; i < t.size(); ++i) {
             Q_.push(t[i]);
         }
+        this->cond_.notify_all();
     }
     T pop() {
         boost::unique_lock<boost::mutex> lock(this->mutex_);
