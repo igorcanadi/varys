@@ -1,13 +1,13 @@
 #ifndef _OUTPUT_MANAGER_H
 #define _OUTPUT_MANAGER_H
 
-#include <iostream>
 #include <ctime>
 #include <cstdlib>
 #include <set>
 #include <utility>
 #include <pthread.h>
 #include <boost/property_tree/ptree.hpp>
+#include <glog/logging.h>
 
 #include "queue.h"
 #include "record.h"

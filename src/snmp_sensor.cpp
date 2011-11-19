@@ -20,7 +20,7 @@ int SNMPSensor::getRecord(ptrRecord record) {
     netsnmp_session *session;
     session = snmp_open(&sess);
     if (!session) {
-        std::cerr << "Can't open connection to " << this->host_ << std::endl;
+        LOG(ERROR) << "Can't open connection to " << this->host_;
         return -1;
     }
 

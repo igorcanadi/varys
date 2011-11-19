@@ -1,10 +1,10 @@
 #ifndef _SNMP_SENSOR_H
 #define _SNMP_SENSOR_H
 
-#include <iostream>
 #include <cstring>
 #include <cstdlib>
 #include <string>
+#include <glog/logging.h>
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 

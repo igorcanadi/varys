@@ -8,8 +8,7 @@ SensorManager::SensorManager(boost::property_tree::ptree &config,
         this->maxNumberOfThreads_ = config.get <int> ("max_num_of_sensor_threads");
         this->numberOfRetries_ = config.get <int> ("sensor_query_retries");
     } catch (boost::property_tree::ptree_bad_path e) {
-        std::cerr << "error reading config for sensors\n";
-        exit(1);
+        LOG(FATAL) << "Error reading configuration for sensor manager";
     }
 
     this->exitInitiated_ = false;
@@ -21,8 +20,7 @@ SensorManager::~SensorManager() {
 
 void SensorManager::run() {
     if (maxNumberOfThreads_ < 2) {
-        std::cerr << "I need to have at least 2 threads\n";
-        exit(1);
+        LOG(FATAL) << "I need to have at least 2 threads";
     }
     this->threads_.resize(maxNumberOfThreads_);
 
@@ -39,7 +37,7 @@ void SensorManager::run() {
 }
 
 void SensorManager::cleanExit() {
-    printf("SensorManager: clean exit called\n");
+    LOG(INFO) << "SensorManager: clean exit called";
 
     if (this->exitInitiated_)
         return;
@@ -49,6 +47,8 @@ void SensorManager::cleanExit() {
     for (int i = 0; i < this->threads_.size(); ++i) {
         pthread_join(this->threads_[i], NULL);
     }
+
+    LOG(INFO) << "SensorManager: exited";
 }
 
 void * SensorManager::callScheduleThread(void *arg) {
@@ -65,7 +65,7 @@ void SensorManager::scheduleThread() {
 
         while (this->timeouts_.begin()->first <= now) {
             std::pair <int, int> nextJob = *this->timeouts_.begin();
-            printf("scheduling sensor %d\n", nextJob.second);
+            LOG(INFO) << "Scheduling sensor query " << nextJob.second;
             this->jobQueue_.push(nextJob.second);
             int nextOcurrence = now;
             nextOcurrence += this->sensors_[nextJob.second]->getQueryFrequency();
@@ -93,15 +93,15 @@ void SensorManager::queryThread() {
     int nextJob = this->jobQueue_.pop();
 
     while (!this->exitInitiated_) {
-        printf("%d: dobio poso %d\n", pthread_self(), nextJob);
+        LOG(INFO) << "queryThread will query sensor with ID " 
+            << this->sensors_[nextJob]->getSensorID();
         ptrRecord record(new Record());
         bool recordGood = false;
 
         for (int retry = 0; retry < this->numberOfRetries_; ++retry) {
-            std::cerr << "querying "
+            LOG(INFO) << "Querying " 
                 << this->sensors_[nextJob]->getSensorID()
-                << " retry " << retry
-                << std::endl;
+                << " retry " << retry;
 
             if (this->sensors_[nextJob]->getRecord(record) == 0) {
                 recordGood = true;
@@ -114,9 +114,8 @@ void SensorManager::queryThread() {
         if (recordGood) {
             this->outputBuffer_->push(record);
         } else {
-            std::cerr << "something wrong with sensor "
-                << this->sensors_[nextJob]->getSensorID()
-                << std::endl;
+            LOG(ERROR) << "PANIC! Something wrong with sensor "
+                << this->sensors_[nextJob]->getSensorID();
         }
         nextJob = this->jobQueue_.pop();
     }

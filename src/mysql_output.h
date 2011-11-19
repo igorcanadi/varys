@@ -1,12 +1,12 @@
 #ifndef _MYSQL_OUTPUT_H
 #define _MYSQL_OUTPUT_H
 
-#include <iostream>
 #include <vector>
 #include <string>
 #include <mysql++/mysql++.h>
 #include <exception>
 #include <boost/property_tree/ptree.hpp>
+#include <glog/logging.h>
 
 #include "record.h"
 #include "output.h"

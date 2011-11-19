@@ -1,6 +1,7 @@
 #ifndef _SENSOR_FACTORY_H
 #define _SENSOR_FACTORY_H
 
+#include <glog/logging.h>
 #include <boost/foreach.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/info_parser.hpp>
@@ -24,8 +25,7 @@ public:
             return boost::shared_ptr<Sensor>(
                     new SNMPSensor(sensorID, host, community, oid));
         } else {
-            printf("Unrecognized protocol\n");
-            return boost::shared_ptr<Sensor>();
+            LOG(FATAL) << "Unrecognized Sensor protocol";
         }
     }
 

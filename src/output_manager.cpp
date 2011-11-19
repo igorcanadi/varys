@@ -9,8 +9,7 @@ OutputManager::OutputManager(boost::property_tree::ptree &config,
     try {
         this->flushFrequency_ = config.get <int> ("flush_frequency");
     } catch (boost::property_tree::ptree_bad_path e) {
-        std::cerr << "error reading config for output managers\n";
-        exit(1);
+        LOG(FATAL) << "Error reading configuration for output managers\n";
     }
     this->exitInitiated_ = false;
 }
@@ -25,13 +24,15 @@ void OutputManager::run() {
 }
 
 void OutputManager::cleanExit() {
-    printf("OutputManager: clean exit called\n");
+    LOG(INFO) << "OutputManager: clean exit called";
 
     if (this->exitInitiated_)
         return;
 
     this->exitInitiated_ = true;
     pthread_join(this->thread_, NULL);
+
+    LOG(INFO) << "OutputManager: Exited";
 }
 
 void * OutputManager::callOutputThread(void *arg) {
@@ -48,9 +49,11 @@ void OutputManager::outputThread() {
             // flush now
             std::vector <ptrRecord> records;
             this->outputBuffer_->popMany(records, -1, /* block */ false);
-            printf("Flushing %d records\n", records.size());
+            LOG(INFO) << "Flushing " << records.size() << " records";
             if (records.size()) {
-                this->output_->outputRecords(records);
+                // TODO add retries
+                int ret = this->output_->outputRecords(records);
+                CHECK(ret != -1);
             }
             nextFlush = now + this->flushFrequency_;
         }

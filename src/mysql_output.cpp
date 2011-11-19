@@ -8,11 +8,12 @@ MySQLOutput::MySQLOutput(const boost::property_tree::ptree &config) {
         this->db_ = config.get<std::string>("mysql.db");
         this->table_ = config.get<std::string>("mysql.table");
     } catch (boost::property_tree::ptree_bad_path e) {
-        std::cerr << "error reading config for mysql\n";
+        LOG(FATAL) << "Error reading configuration for mysql";
     }
 }
 
 int MySQLOutput::outputRecords(const std::vector <ptrRecord>& records) {
+    LOG(INFO) << "MySQL outputing " << records.size() << " records";
     // mysql library throws exceptions
     try {
         if (!this->connection_.connected())
@@ -24,7 +25,6 @@ int MySQLOutput::outputRecords(const std::vector <ptrRecord>& records) {
             << " VALUES ";
 
         bool addComa = false;
-        // TODO insert by chunks
         for (int i = 0; i < records.size(); ++i) {
             if (addComa) query << ",";
             query << "(" << records[i]->getSensorID() << ","
@@ -36,11 +36,11 @@ int MySQLOutput::outputRecords(const std::vector <ptrRecord>& records) {
         mysqlpp::SimpleResult res = query.execute();
 
         // if we're here, insertion succeeded
-        std::cerr << "Inserted " << records.size() <<
+        LOG(INFO) << "Inserted " << records.size() <<
             " records into " << this->table_ << std::endl;
 
     } catch (const std::exception& er) {
-        std::cerr << "Error: " << er.what() << std::endl;
+        LOG(ERROR) << "Error in MySQL " << er.what() << std::endl;
         return -1;
     }
 
