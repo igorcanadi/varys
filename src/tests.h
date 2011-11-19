@@ -54,7 +54,7 @@ void test_queue() {
     ob.push(3);
 
     CHECK(ob.pop() == 2);
-    std::vector <int> t(3, 8);
+    std::vector <int> t(8, 3);
 
     ob.pushMany(t);
 
@@ -123,8 +123,8 @@ void test_all_together(boost::property_tree::ptree &config) {
 
     sm->run();
     om->run();
-    // run for 1hour
-    sleep(60*60);
+    // run for 12hours
+    sleep(60*60*12);
 
     delete om;
     delete sm;
