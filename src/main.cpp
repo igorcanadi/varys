@@ -8,6 +8,7 @@
 
 
 int main(int argc, char *argv[]) {
+    google::InitGoogleLogging(argv[0]);
     LOG(INFO) << "Started varys";
 
     // on failure signal, dumps the trace
