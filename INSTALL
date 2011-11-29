@@ -1,0 +1,6 @@
+sudo yum install net-snmp
+sudo yum install net-snmp-devel
+sudo yum install mysql-devel
+Manually install mysql++
+Manually install libboost-1.48
+Manually install glog (google logger)
