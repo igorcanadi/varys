@@ -1,11 +1,17 @@
 #include "snmp_sensor.h"
 
+bool SNMPSensor::libraryInitialized_ = false;
+boost::mutex SNMPSensor::mutex_;
+
 int SNMPSensor::getRecord(ptrRecord record) {
     int retval = -1;
 
-    if (!this->libraryInitialized_) {
+    // SNMP library might not be thread-safe
+    boost::lock_guard<boost::mutex> lock(SNMPSensor::mutex_);
+
+    if (!SNMPSensor::libraryInitialized_) {
         init_snmp("snmpsensor");
-        this->libraryInitialized_ = true;
+        SNMPSensor::libraryInitialized_ = true;
     }
 
     // initialize session

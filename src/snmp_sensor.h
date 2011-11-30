@@ -7,6 +7,9 @@
 #include <glog/logging.h>
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/condition_variable.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "record.h"
 #include "sensor.h"
@@ -30,7 +33,8 @@ public:
 
 private:
     std::string host_, community_, oid_;
-    bool libraryInitialized_;
+    static bool libraryInitialized_;
+    static boost::mutex mutex_;
 };
 
 #endif
