@@ -21,7 +21,7 @@ int MySQLOutput::outputRecords(const std::vector <ptrRecord>& records) {
 
         mysqlpp::Query query = this->connection_.query();
         query << "INSERT INTO " << this->table_
-            << " (sensor_id, timestamp, value) "
+            << " (id, time, value) "
             << " VALUES ";
 
         bool addComa = false;

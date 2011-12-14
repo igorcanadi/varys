@@ -23,4 +23,4 @@ varys: $(OBJS)
 	$(CC) $(CCFLAGS) $(LDFLAGS) -c $< -o $@
 
 clean:
-	rm *.o
+	rm *.o varys
