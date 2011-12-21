@@ -10,7 +10,7 @@
 int exit_initiated = 0;
 
 void sighandler(int signum) {
-    if (signum == SIGTERM) {
+    if (signum == SIGTERM || signum == SIGINT) {
         exit_initiated = 1;
     }
 }
@@ -24,6 +24,7 @@ void main_loop(boost::property_tree::ptree &config) {
     SensorManager *sm = new SensorManager(config, outputBuffer);
 
     signal(SIGTERM, sighandler);
+    signal(SIGINT, sighandler);
 
     sm->run();
     om->run();
