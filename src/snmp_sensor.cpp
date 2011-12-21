@@ -45,13 +45,16 @@ int SNMPSensor::getRecord(ptrRecord record) {
     int status = snmp_synch_response(session, req, &response);
 
     if (status == STAT_SUCCESS && response->errstat == SNMP_ERR_NOERROR) {
-        // TODO Create record here from the actual variable read from the server
-        this->createRecord(record, rand());
-
         for (netsnmp_variable_list *vars = response->variables; vars; vars = vars->next_variable) {
-            print_variable(vars->name, vars->name_length, vars);
+            if (vars->type == ASN_INTEGER) {
+                this->createRecord(record, (double) *vars->val.integer);
+                retval = 0;
+                break;
+            }
         }
-        retval = 0;
+        if (retval) {
+            LOG(ERROR) << "Can't find suitable variable for " << this->host_ << "::" << this->oid_;
+        }
     }
 
     if (response)

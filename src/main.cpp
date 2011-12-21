@@ -26,12 +26,12 @@ int main(int argc, char *argv[]) {
         LOG(FATAL) << "Error reading configuration";
     }
 
-    test_sensor_manager(config);
+    //test_sensor_manager(config);
     test_snmp_sensor(config);
-    test_mysql(config);
-    test_output_manager(config);
-    test_queue();
-    test_all_together(config);
+    //test_mysql(config);
+    //test_output_manager(config);
+    //test_queue();
+    //test_all_together(config);
 
     return 0;
 }

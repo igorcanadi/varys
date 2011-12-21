@@ -20,21 +20,22 @@ class SNMPSensor : public Sensor {
 public:
     virtual int getRecord(ptrRecord record);
     virtual int getQueryFrequency() {
-        // TODO read this from config
-        return 5;
+        return queryFrequency_;
     }
 
     SNMPSensor(int _sensorID, std::string _host,
-            std::string _community, std::string _oid) :
+            std::string _community, std::string _oid, int _queryFrequency) :
         Sensor(_sensorID),
         host_(_host),
         community_(_community),
-        oid_(_oid) {}
+        oid_(_oid),
+        queryFrequency_(_queryFrequency) {}
 
 private:
     std::string host_, community_, oid_;
     static bool libraryInitialized_;
     static boost::mutex mutex_;
+    int queryFrequency_;
 };
 
 #endif

@@ -22,8 +22,10 @@ public:
             host = config.get<std::string>("host");
             community = config.get<std::string>("community");
             oid = config.get<std::string>("oid");
+            int queryFrequency = config.get<int>("query_frequency");
             return boost::shared_ptr<Sensor>(
-                    new SNMPSensor(sensorID, host, community, oid));
+                    new SNMPSensor(sensorID, host, community,
+                        oid, queryFrequency));
         } else {
             LOG(FATAL) << "Unrecognized Sensor protocol";
         }
