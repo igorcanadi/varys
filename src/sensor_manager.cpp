@@ -112,8 +112,8 @@ void SensorManager::queryThread() {
             usleep(200000);
         }
         if (recordGood) {
-            LOG(INFO) << "Got response: " << record->getSensorID()
-                << record->getTimestamp() << record->getValue();
+            LOG(INFO) << "Got response: " << record->getSensorID() << " "
+                << record->getTimestamp() << " " << record->getValue();
 
             this->outputBuffer_->push(record);
         } else {
