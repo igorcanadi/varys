@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
             read_info(argv[1], config);
         }
     } catch (boost::property_tree::info_parser_error e) {
-        LOG(FATAL) << "Error reading configuration";
+        LOG(FATAL) << "Error reading configuration: " << e.message();
     }
 
     //test_sensor_manager(config);
